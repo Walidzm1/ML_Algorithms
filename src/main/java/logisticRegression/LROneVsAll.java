@@ -16,8 +16,8 @@ public class LROneVsAll {
 
 	public LROneVsAll() {
 		this.lambda = 0.02;
-		trainingFile = "datasets/logistic_regression_train.data";
-		testingFile = "datasets/logistic_regression_test.data";
+		trainingFile = "datasets/logistic_regression_trainset.data";
+		testingFile = "datasets/logistic_regression_testset.data";
 		this.nb_iterations = 100000;
 		this.learning_rate = 0.0001;
 	}
@@ -81,20 +81,13 @@ public class LROneVsAll {
 		return weights;
 	}
 
-	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights, boolean show) {
+	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights) {
 
 		int row = data.getRowDimension();
 		int column = data.getColumnDimension();
 		assert row == targets.getRowDimension();
 		assert column == weights.getColumnDimension();
-
 		Matrix predictTargets = predict(data, weights);
-		
-		if(show){
-			for (int i = 0; i < predictTargets.getRowDimension(); i++) {
-				System.out.println(predictTargets.get(i, 0));
-			}
-		}
 
 		return costFunction(targets, predictTargets);
 	}
@@ -143,8 +136,8 @@ public class LROneVsAll {
 			System.out.println("-----------------");
 
 			/** Evaluate the model using training and testing data. */
-			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights, false);
-			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights, true);
+			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
+			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights);
 
 			System.out.println("-----------------");
 			System.out.println(training_error);

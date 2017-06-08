@@ -80,7 +80,7 @@ public class LRGradientDescent {
 		return weights;
 	}
 
-	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights) {
+	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights, boolean show) {
 
 		int row = data.getRowDimension();
 		int column = data.getColumnDimension();
@@ -89,6 +89,11 @@ public class LRGradientDescent {
 
 		Matrix predictTargets = predict(data, weights);
 
+		if (show) {
+			for (int i = 0; i < predictTargets.getRowDimension(); i++) {
+				System.out.println(predictTargets.get(i, 0));
+			}
+		}
 		return costFunction(targets, predictTargets, weights);
 	}
 
@@ -137,8 +142,8 @@ public class LRGradientDescent {
 			System.out.println("-----------------");
 
 			/** Evaluate the model using training and testing data. */
-			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
-			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights);
+			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights, false);
+			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights, true);
 
 			System.out.println("-----------------");
 			System.out.println(training_error);

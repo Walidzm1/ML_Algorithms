@@ -18,12 +18,11 @@ public class LRGradientDescent {
 		trainingFile = "datasets/logistic_regression_train.data";
 		testingFile = "datasets/logistic_regression_test.data";
 		this.nb_iterations = 100000;
-//		this.nb_iterations = 10;
-		this.learning_rate = 0.01;
+		this.learning_rate = 0.0001;
 	}
 
 	private double sigmoidFunction(double z) {
-		return 1 / (1 + Math.exp(-z));
+		 return 1.0 / (1.0 + Math.exp(-z));
 	}
 
 	private double hypothesis(Matrix data, int nb_row, Matrix weights) {
@@ -38,7 +37,6 @@ public class LRGradientDescent {
 		
 		double tmp = 0.0;
 		for (int i = 0; i < targets.getRowDimension(); i++) {
-//			System.out.println("> "+predictTargets.get(i, 0));
 			tmp += costFunction_aux(targets, predictTargets, i);
 		}
 		return -1 * tmp / targets.getRowDimension();
@@ -66,12 +64,11 @@ public class LRGradientDescent {
 		int rows = data.getRowDimension();
 		Matrix weights = new Matrix(column, 1);
 		Matrix tmp_weights = new Matrix(column, 1);
+	
 		for (int i = 0; i < nb_iterations; i++) {
-
 			for (int j = 0; j < weights.getRowDimension(); j++) {
 				/** h(x(i)) - y(i)) * x(i)j */
-				
-				double sumError = sumErrorByX(data, tmp_weights, targets, j);
+				double sumError = sumErrorByX(data, weights, targets, j);
 				double tmp = weights.get(j, 0) - ((learning_rate / rows) * (sumError));
 				tmp_weights.set(j, 0, tmp);
 			}
@@ -101,9 +98,7 @@ public class LRGradientDescent {
 		int row = data.getRowDimension();
 		Matrix predictTargets = new Matrix(row, 1);
 		for (int i = 0; i < row; i++) {
-//			double value = MatriceUtils.multiply(data.getMatrix(i, i, 0, data.getColumnDimension() -1 ), weights);
 			double value = hypothesis(data, i, weights);
-//			System.out.println(value);
 			predictTargets.set(i, 0, value);
 		}
 		return predictTargets;

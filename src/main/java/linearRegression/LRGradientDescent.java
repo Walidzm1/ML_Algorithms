@@ -30,7 +30,6 @@ public class LRGradientDescent {
 		return res;
 	}
 	
-	//									X		theta				y	  		thetaj	
 	private double sumErrorByX(Matrix data, Matrix weights, Matrix targets, int nb_row){
 		
 		int rows = data.getRowDimension();
@@ -53,14 +52,13 @@ public class LRGradientDescent {
 			for(int j=0;j <weights.getRowDimension();j++){
 
 				/** 		h(x(i)) - y(i)) * x(i)j 	*/
-				double sumError = sumErrorByX(data, tmp_weights, targets, j);
+				double sumError = sumErrorByX(data, weights, targets, j);
 				double right_value = 0.0;
 				/** do not regularize the theta 0 */
 				if(j == 0){
 					right_value = weights.get(j, 0) -  ((learning_rate / rows ) *  sumError)  ; 
 				}
 				else{
-//					right_value = weights.get(j, 0) -  ((learning_rate / rows ) *  (sumError + lambda * weights.get(0, j)))  ; 
 					right_value = weights.get(j, 0) * (1 - (learning_rate * lambda / rows)) - ((learning_rate / rows ) * sumError)  ; 
 				}
 				tmp_weights.set(j, 0, right_value);

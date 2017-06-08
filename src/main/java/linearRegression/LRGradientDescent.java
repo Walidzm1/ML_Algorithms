@@ -25,7 +25,7 @@ public class LRGradientDescent {
 	private double hypothesis(Matrix data, int nb_row, Matrix weights){
 		double res = 0.0;
 		for(int i = 0 ; i < data.getColumnDimension() ; i++){
-			res += data.get(nb_row, i) * weights.get(0 ,i); 
+			res += data.get(nb_row, i) * weights.get(i, 0); 
 		}
 		return res;
 	}
@@ -45,32 +45,32 @@ public class LRGradientDescent {
 		
 		int column = data.getColumnDimension();
 		int rows = data.getRowDimension();
-		Matrix weights = new Matrix(1, column);
-		Matrix tmp_weights = new Matrix(1, column);
+		Matrix weights = new Matrix(column, 1);
+		Matrix tmp_weights = new Matrix(column, 1);
 		
 		for(int i = 0 ; i < nb_iterations; i++){
 
-			for(int j=0;j <weights.getColumnDimension();j++){
+			for(int j=0;j <weights.getRowDimension();j++){
 
 				/** 		h(x(i)) - y(i)) * x(i)j 	*/
 				double sumError = sumErrorByX(data, tmp_weights, targets, j);
 				double right_value = 0.0;
 				/** do not regularize the theta 0 */
 				if(j == 0){
-					right_value = weights.get(0, j) -  ((learning_rate / rows ) *  sumError)  ; 
+					right_value = weights.get(j, 0) -  ((learning_rate / rows ) *  sumError)  ; 
 				}
 				else{
-//					right_value = weights.get(0, j) -  ((learning_rate / rows ) *  (sumError + lambda * weights.get(0, j)))  ; 
-					right_value = weights.get(0, j) * (1 - (learning_rate * lambda / rows)) - ((learning_rate / rows ) * sumError)  ; 
+//					right_value = weights.get(j, 0) -  ((learning_rate / rows ) *  (sumError + lambda * weights.get(0, j)))  ; 
+					right_value = weights.get(j, 0) * (1 - (learning_rate * lambda / rows)) - ((learning_rate / rows ) * sumError)  ; 
 				}
-				tmp_weights.set(0,j, right_value);
+				tmp_weights.set(j, 0, right_value);
 			}
 
-			for(int j=0;j <weights.getColumnDimension();j++){
-				weights.set(0, j, tmp_weights.get(0, j));
+			for(int j=0;j <weights.getRowDimension();j++){
+				weights.set(j, 0, tmp_weights.get(j, 0));
 			}
 		}
-		return weights.transpose(); 
+		return weights; 
 	}
 
 	

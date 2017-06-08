@@ -3,7 +3,6 @@ package logisticRegression;
 import Jama.Matrix;
 import utils.FileUtils;
 import utils.MLUtils;
-import utils.MatriceUtils;
 
 public class LRGradientDescent {
 
@@ -19,7 +18,7 @@ public class LRGradientDescent {
 		trainingFile = "datasets/logistic_regression_train.data";
 		testingFile = "datasets/logistic_regression_test.data";
 		this.nb_iterations = 100000;
-		this.nb_iterations = 10;
+//		this.nb_iterations = 10;
 		this.learning_rate = 0.01;
 	}
 
@@ -30,24 +29,24 @@ public class LRGradientDescent {
 	private double hypothesis(Matrix data, int nb_row, Matrix weights) {
 		double res = 0.0;
 		for (int j = 0; j < data.getColumnDimension(); j++) {
-			res += data.get(nb_row, j) * weights.get(0, j);
+			res += data.get(nb_row, j) * weights.get(j, 0);
 		}
 		return sigmoidFunction(res);
 	}
 
-	private double costFunction(Matrix data, Matrix targets, Matrix weights) {
-
-		int rows = data.getRowDimension();
+	private double costFunction(Matrix targets, Matrix predictTargets) {
+		
 		double tmp = 0.0;
-		for (int i = 0; i < rows; i++) {
-			tmp += costFunction_aux(data, targets, weights, i);
+		for (int i = 0; i < targets.getRowDimension(); i++) {
+//			System.out.println("> "+predictTargets.get(i, 0));
+			tmp += costFunction_aux(targets, predictTargets, i);
 		}
-		return (-1 / rows) * tmp;
+		return -1 * tmp / targets.getRowDimension();
 	}
 
-	private double costFunction_aux(Matrix data, Matrix targets, Matrix weights, int nb_row) {
-		return -targets.get(0, nb_row) * Math.log(hypothesis(data, nb_row, weights))
-				- ((1 - targets.get(0, nb_row)) * Math.log(1 - hypothesis(data, nb_row, weights)));
+	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row) {
+		return (-1 * targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
+				+ ((1 - targets.get(nb_row, 0)) * Math.log(1 - predictTargets.get(nb_row, 0)));
 	}
 
 	private double sumErrorByX(Matrix data, Matrix weights, Matrix targets, int nb_row) {
@@ -65,28 +64,26 @@ public class LRGradientDescent {
 
 		int column = data.getColumnDimension();
 		int rows = data.getRowDimension();
-		Matrix weights = new Matrix(1, column);
-		Matrix tmp_weights = new Matrix(1, column);
-
+		Matrix weights = new Matrix(column, 1);
+		Matrix tmp_weights = new Matrix(column, 1);
 		for (int i = 0; i < nb_iterations; i++) {
 
-			for (int j = 0; j < weights.getColumnDimension(); j++) {
+			for (int j = 0; j < weights.getRowDimension(); j++) {
 				/** h(x(i)) - y(i)) * x(i)j */
 				
 				double sumError = sumErrorByX(data, tmp_weights, targets, j);
-				double tmp = weights.get(0, j) - ((learning_rate / rows) * (sumError));
-				tmp_weights.set(0, j, tmp);
+				double tmp = weights.get(j, 0) - ((learning_rate / rows) * (sumError));
+				tmp_weights.set(j, 0, tmp);
 			}
-
-			for (int j = 0; j < weights.getColumnDimension(); j++) {
-				weights.set(0, j, tmp_weights.get(0, j));
+			for (int j = 0; j < weights.getRowDimension(); j++) {
+				weights.set(j, 0, tmp_weights.get(j, 0));
 			}
 		}
-		return weights.transpose();
+		return weights;
 	}	
 
 	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights) {
-		double error = 0.0;
+
 		int row = data.getRowDimension();
 		int column = data.getColumnDimension();
 		assert row == targets.getRowDimension();
@@ -94,27 +91,20 @@ public class LRGradientDescent {
 
 		Matrix predictTargets = predict(data, weights);
 		
-//		for (int i = 0; i < predictTargets.getRowDimension(); i++) {
-//			System.out.print("=> "+predictTargets.get(i, 0)+" ");
-//		}
+		return costFunction(targets, predictTargets);
 		
-		
-		return costFunction(data, targets, weights.transpose());
-		
-//		for (int i = 0; i < row; i++) {
-//			error += (predictTargets.get(i, 0) - targets.get(i, 0)) * (predictTargets.get(i, 0) - targets.get(i, 0));
-//		}
-//
-//		return error / (2 * row);
 	}
 	
 	
 	private Matrix predict(Matrix data, Matrix weights) {
+		
 		int row = data.getRowDimension();
 		Matrix predictTargets = new Matrix(row, 1);
 		for (int i = 0; i < row; i++) {
-			double value = MatriceUtils.multiply(data.getMatrix(i, i, 0, data.getColumnDimension() -1 ), weights);
-			predictTargets.set(i, 0, sigmoidFunction(value));
+//			double value = MatriceUtils.multiply(data.getMatrix(i, i, 0, data.getColumnDimension() -1 ), weights);
+			double value = hypothesis(data, i, weights);
+//			System.out.println(value);
+			predictTargets.set(i, 0, value);
 		}
 		return predictTargets;
 	}
@@ -140,11 +130,11 @@ public class LRGradientDescent {
 
 			/** Train the model. */
 			Matrix weights = lr.trainLinearRegressionModel(trainingData, trainingTargets, lr.lambda, lr.learning_rate, lr.nb_iterations);
-//			for (int i = 0; i < weights.getRowDimension(); i++) {
-//				System.out.print(weights.get(i, 0) + " ");
-//			}
-//			System.out.println();
-
+		    for (int i = 0; i < weights.getRowDimension(); i++) {
+		    	System.out.print(weights.get(i, 0) + " " );
+		    }
+		    System.out.println();
+			
 			/** Evaluate the model using training and testing data. */
 			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights);

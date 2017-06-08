@@ -33,17 +33,17 @@ public class LRGradientDescent {
 		return sigmoidFunction(res);
 	}
 
-	private double costFunction(Matrix targets, Matrix predictTargets) {
+	private double costFunction(Matrix targets, Matrix predictTargets, Matrix weights) {
 
 		double tmp = 0.0;
 		for (int i = 0; i < targets.getRowDimension(); i++) {
-			tmp += costFunction_aux(targets, predictTargets, i);
+			tmp += costFunction_aux(targets, predictTargets, i, weights);
 		}
 		return -1 * tmp / targets.getRowDimension();
 	}
 
-	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row) {
-		return (-1 * targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
+	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row, Matrix weights) {
+		return (targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
 				+ ((1 - targets.get(nb_row, 0)) * Math.log(1 - predictTargets.get(nb_row, 0)));
 	}
 
@@ -89,7 +89,7 @@ public class LRGradientDescent {
 
 		Matrix predictTargets = predict(data, weights);
 
-		return costFunction(targets, predictTargets);
+		return costFunction(targets, predictTargets, weights);
 	}
 
 	private Matrix predict(Matrix data, Matrix weights) {
@@ -134,11 +134,13 @@ public class LRGradientDescent {
 				System.out.print(weights.get(i, 0) + " ");
 			}
 			System.out.println();
+			System.out.println("-----------------");
 
 			/** Evaluate the model using training and testing data. */
 			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights);
 
+			System.out.println("-----------------");
 			System.out.println(training_error);
 			System.out.println(testing_error);
 

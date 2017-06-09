@@ -76,11 +76,19 @@ public class FileUtils {
 	public static void writeFile(String path, Matrix weights) throws IOException  {
 		String theta = "" ;
 		for (int i = 0; i < weights.getRowDimension(); i++) {
-			theta = String.valueOf(weights.get(i, 0)).concat(",").concat(theta);
+			
+			if(i==0){
+				theta = String.valueOf(weights.get(i, 0));
+			}
+			else{
+				theta += ","+String.valueOf(weights.get(i, 0));
+			}
+
+		
 		}
 		
 		List<String> lines = Arrays.asList(theta);
-		Path file = Paths.get(path);
+		Path file = Paths.get("results\\"+path);
 		Files.write(file, lines, Charset.forName("UTF-8"));
 	}
 	

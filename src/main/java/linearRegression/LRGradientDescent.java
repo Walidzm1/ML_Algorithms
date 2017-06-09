@@ -126,7 +126,7 @@ public class LRGradientDescent {
 			Matrix weights = graD.trainLinearRegressionModel(trainingData, trainingTargets, graD.lambda,
 					graD.learning_rate, graD.nb_iterations);
 			
-			FileUtils.writeFile("results\\linear_regressoin_gradient_descent_thetas.data", weights);
+			FileUtils.writeFile("linear_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
 			double training_error = graD.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);

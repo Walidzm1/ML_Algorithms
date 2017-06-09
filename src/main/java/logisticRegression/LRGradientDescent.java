@@ -139,7 +139,7 @@ public class LRGradientDescent {
 
 
 			
-			FileUtils.writeFile("results\\logistic_regressoin_gradient_descent_thetas.data", weights);
+			FileUtils.writeFile("logistic_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
 			double training_error = lr.evaluateLogitsicRegressionModel(trainingData, trainingTargets, weights, false);

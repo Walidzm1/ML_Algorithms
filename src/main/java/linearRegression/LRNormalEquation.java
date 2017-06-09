@@ -124,7 +124,7 @@ public class LRNormalEquation {
 			/** Train the model. */
 			Matrix weights = norEq.trainLinearRegressionModel(trainingData, trainingTargets, norEq.lambda);
 
-			FileUtils.writeFile("results\\linear_regressoin_normal_equation_thetas.data", weights);
+			FileUtils.writeFile("linear_regressoin_normal_equation_thetas.data", weights);
 			
 			/** Evaluate the model using training and testing data. */
 			double training_error = norEq.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);

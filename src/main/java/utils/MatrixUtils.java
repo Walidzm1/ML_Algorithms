@@ -2,7 +2,7 @@ package utils;
 
 import Jama.Matrix;
 
-public class MatriceUtils {
+public class MatrixUtils {
 
 	
 	/**

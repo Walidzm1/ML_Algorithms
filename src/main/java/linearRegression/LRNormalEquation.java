@@ -3,7 +3,7 @@ package linearRegression;
 import Jama.Matrix;
 import utils.FileUtils;
 import utils.MLUtils;
-import utils.MatriceUtils;
+import utils.MatrixUtils;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -79,7 +79,7 @@ public class LRNormalEquation {
 		assert row == targets.getRowDimension();
 		assert column == weights.getColumnDimension();
 
-		Matrix predictTargets = MatriceUtils.predict(data, weights);
+		Matrix predictTargets = MatrixUtils.predict(data, weights);
 		for (int i = 0; i < row; i++) {
 			error += (predictTargets.get(i, 0) - targets.get(i, 0)) * (predictTargets.get(i, 0) - targets.get(i, 0));
 		}

@@ -1,17 +1,9 @@
 package linearRegression;
 
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import Jama.Matrix;
 import utils.FileUtils;
 import utils.MLUtils;
-import utils.MatriceUtils;
+import utils.MatrixUtils;
 
 public class LRGradientDescent {
 
@@ -22,7 +14,7 @@ public class LRGradientDescent {
 	public Double learning_rate;
 
 	public LRGradientDescent() {
-		this.lambda = 1.2;
+		this.lambda = 0.2;
 //		trainingFile = "datasets/linear_regression_train.data";
 //		testingFile = "datasets/linear_regression_test.data";
 		trainingFile = "datasets/linearR_train.data";
@@ -92,7 +84,7 @@ public class LRGradientDescent {
 		assert row == targets.getRowDimension();
 		assert column == weights.getColumnDimension();
 
-		Matrix predictTargets = MatriceUtils.predict(data, weights);
+		Matrix predictTargets = MatrixUtils.predict(data, weights);
 		for (int i = 0; i < row; i++) {
 			error += (predictTargets.get(i, 0) - targets.get(i, 0)) * (predictTargets.get(i, 0) - targets.get(i, 0));
 		}

@@ -60,7 +60,7 @@ public class LRGradientDescent {
 
 	}
 
-	private Matrix trainLinearRegressionModel(Matrix data, Matrix targets, Double lambda, double learning_rate,
+	private Matrix trainLogisticRegressionModel(Matrix data, Matrix targets, Double lambda, double learning_rate,
 			int nb_iterations) {
 
 		int column = data.getColumnDimension();
@@ -82,7 +82,7 @@ public class LRGradientDescent {
 		return weights;
 	}
 
-	private double evaluateLogitsicRegressionModel(Matrix data, Matrix targets, Matrix weights, boolean show) {
+	private double evaluateLogisticRegressionModel(Matrix data, Matrix targets, Matrix weights) {
 
 		int row = data.getRowDimension();
 		int column = data.getColumnDimension();
@@ -90,11 +90,7 @@ public class LRGradientDescent {
 		assert column == weights.getColumnDimension();
 
 		Matrix predictTargets = predict(data, weights);
-//		if (show) {
-//			for (int i = 0; i < predictTargets.getRowDimension(); i++) {
-//				System.out.println(predictTargets.get(i, 0));
-//			}
-//		}
+
 		return costFunction(targets, predictTargets, weights);
 	}
 
@@ -134,16 +130,14 @@ public class LRGradientDescent {
 			Matrix testingTargets = MLUtils.getTargets(testing);
 
 			/** Train the model. */
-			Matrix weights = lr.trainLinearRegressionModel(trainingData, trainingTargets, lr.lambda, lr.learning_rate,
+			Matrix weights = lr.trainLogisticRegressionModel(trainingData, trainingTargets, lr.lambda, lr.learning_rate,
 					lr.nb_iterations);
 
-
-			
 			FileUtils.writeFile("logistic_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
-			double training_error = lr.evaluateLogitsicRegressionModel(trainingData, trainingTargets, weights, false);
-			double testing_error = lr.evaluateLogitsicRegressionModel(testingData, testingTargets, weights, true);
+			double training_error = lr.evaluateLogisticRegressionModel(trainingData, trainingTargets, weights);
+			double testing_error = lr.evaluateLogisticRegressionModel(testingData, testingTargets, weights);
 
 			System.out.println("Training error: "+training_error);
 			System.out.println("Test error: "+testing_error);

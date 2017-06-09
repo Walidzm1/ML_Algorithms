@@ -10,4 +10,4 @@ My proper implementation of machine learning algorithms from scratch
   -> Binary classifier (Gradient descent) <br />
   -> One-vs-All classifier (Gradient descent) <br />
 
-+ plotting data & boundary decision with matlab scripts
++ Plotting functions with matlab scripts

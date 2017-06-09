@@ -15,8 +15,10 @@ public class LRGradientDescent {
 
 	public LRGradientDescent() {
 		this.lambda = 0.02;
-		trainingFile = "datasets/logistic_regression_train.data";
-		testingFile = "datasets/logistic_regression_test.data";
+//		trainingFile = "datasets/logistic_regression_train.data";
+//		testingFile = "datasets/logistic_regression_test.data";
+		trainingFile = "datasets/logisticR_train.data";
+		testingFile = "datasets/logisticR_test.data";
 		this.nb_iterations = 100000;
 		this.learning_rate = 0.0001;
 	}
@@ -80,7 +82,7 @@ public class LRGradientDescent {
 		return weights;
 	}
 
-	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights, boolean show) {
+	private double evaluateLogitsicRegressionModel(Matrix data, Matrix targets, Matrix weights, boolean show) {
 
 		int row = data.getRowDimension();
 		int column = data.getColumnDimension();
@@ -88,12 +90,11 @@ public class LRGradientDescent {
 		assert column == weights.getColumnDimension();
 
 		Matrix predictTargets = predict(data, weights);
-
-		if (show) {
-			for (int i = 0; i < predictTargets.getRowDimension(); i++) {
-				System.out.println(predictTargets.get(i, 0));
-			}
-		}
+//		if (show) {
+//			for (int i = 0; i < predictTargets.getRowDimension(); i++) {
+//				System.out.println(predictTargets.get(i, 0));
+//			}
+//		}
 		return costFunction(targets, predictTargets, weights);
 	}
 
@@ -135,22 +136,20 @@ public class LRGradientDescent {
 			/** Train the model. */
 			Matrix weights = lr.trainLinearRegressionModel(trainingData, trainingTargets, lr.lambda, lr.learning_rate,
 					lr.nb_iterations);
-			for (int i = 0; i < weights.getRowDimension(); i++) {
-				System.out.print(weights.get(i, 0) + " ");
-			}
-			System.out.println();
-			System.out.println("-----------------");
+
+
+			
+			FileUtils.writeFile("results\\logistic_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
-			double training_error = lr.evaluateLinearRegressionModel(trainingData, trainingTargets, weights, false);
-			double testing_error = lr.evaluateLinearRegressionModel(testingData, testingTargets, weights, true);
+			double training_error = lr.evaluateLogitsicRegressionModel(trainingData, trainingTargets, weights, false);
+			double testing_error = lr.evaluateLogitsicRegressionModel(testingData, testingTargets, weights, true);
 
-			System.out.println("-----------------");
-			System.out.println(training_error);
-			System.out.println(testing_error);
+			System.out.println("Training error: "+training_error);
+			System.out.println("Test error: "+testing_error);
 
 		} catch (Exception e) {
-			System.out.println("Une erreur lors du calcul du gradient descent");
+			System.out.println("Gradient descent error (logistic regression)");
 		}
 
 	}

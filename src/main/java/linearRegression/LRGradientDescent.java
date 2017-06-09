@@ -1,5 +1,13 @@
 package linearRegression;
 
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import Jama.Matrix;
 import utils.FileUtils;
 import utils.MLUtils;
@@ -14,9 +22,11 @@ public class LRGradientDescent {
 	public Double learning_rate;
 
 	public LRGradientDescent() {
-		this.lambda = 0.02;
-		trainingFile = "datasets/linear_regression_train.data";
-		testingFile = "datasets/linear_regression_test.data";
+		this.lambda = 1.2;
+//		trainingFile = "datasets/linear_regression_train.data";
+//		testingFile = "datasets/linear_regression_test.data";
+		trainingFile = "datasets/linearR_train.data";
+		testingFile = "datasets/linearR_test.data";
 		this.nb_iterations = 1000000;
 		this.learning_rate = 0.01;
 	}
@@ -74,14 +84,6 @@ public class LRGradientDescent {
 	/**
 	 * test the model using the weights trained using linear regression with L2
 	 * regularizer
-	 * 
-	 * @param data
-	 *            n * m matrix
-	 * @param targets
-	 *            n * 1 matrix
-	 * @param weights
-	 *            m * 1 matrix
-	 * @return
 	 */
 	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights) {
 		double error = 0.0;
@@ -123,19 +125,17 @@ public class LRGradientDescent {
 			/** Train the model. */
 			Matrix weights = graD.trainLinearRegressionModel(trainingData, trainingTargets, graD.lambda,
 					graD.learning_rate, graD.nb_iterations);
-			for (int i = 0; i < weights.getRowDimension(); i++) {
-				System.out.print(weights.get(i, 0) + " ");
-			}
-			System.out.println();
+			
+			FileUtils.writeFile("results\\linear_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
 			double training_error = graD.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = graD.evaluateLinearRegressionModel(testingData, testingTargets, weights);
 
-			System.out.println(training_error);
-			System.out.println(testing_error);
+			System.out.println("Training error: "+training_error);
+			System.out.println("Test error: "+testing_error);
 		} catch (Exception e) {
-			System.out.println("Une erreur lors du calcul du gradient descent");
+			System.out.println("Gradient descent (Linear Regression)");
 		}
 
 	}

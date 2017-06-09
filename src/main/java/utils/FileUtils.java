@@ -4,7 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Jama.Matrix;
@@ -67,6 +72,18 @@ public class FileUtils {
 		}
 		readWithBuffer.close();
 	}
+	
+	public static void writeFile(String path, Matrix weights) throws IOException  {
+		String theta = "" ;
+		for (int i = 0; i < weights.getRowDimension(); i++) {
+			theta = String.valueOf(weights.get(i, 0)).concat(",").concat(theta);
+		}
+		
+		List<String> lines = Arrays.asList(theta);
+		Path file = Paths.get(path);
+		Files.write(file, lines, Charset.forName("UTF-8"));
+	}
+	
 	
 	public static void main (String [] args) throws IOException{
 		FileUtils.readFile("C:\\Users\\wzeghdaoui\\Personal workspace\\MachineLearningAlgorithms\\resource\\test.txt");

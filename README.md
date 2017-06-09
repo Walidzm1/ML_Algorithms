@@ -7,7 +7,7 @@ My proper implementation of machine learning algorithms from scratch
   -> Gradient descent <br />
  
 - Linear regression (with regularization) <br />
-  -> Binary classifier (Gradeint descent) <br />
-  -> One-vs-All classifier (Gradeint descent) <br />
+  -> Binary classifier (Gradient descent) <br />
+  -> One-vs-All classifier (Gradient descent) <br />
 
 + plotting data & boundary decision with matlab scripts

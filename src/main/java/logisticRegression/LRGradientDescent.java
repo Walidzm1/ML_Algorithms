@@ -10,7 +10,6 @@ public class LRGradientDescent {
 	public String trainingFile;
 	public String testingFile;
 	public int nb_iterations;
-	public int nb_classes;
 	public Double learning_rate;
 
 	public LRGradientDescent() {
@@ -35,20 +34,32 @@ public class LRGradientDescent {
 		return sigmoidFunction(res);
 	}
 
-	private double costFunction(Matrix targets, Matrix predictTargets, Matrix weights) {
+	private double costFunction(Matrix data, Matrix targets, Matrix predictTargets, Matrix weights) {
 
 		double tmp = 0.0;
 		for (int i = 0; i < targets.getRowDimension(); i++) {
-			tmp += costFunction_aux(targets, predictTargets, i, weights);
+			tmp += costFunction_aux(targets, predictTargets, i);
 		}
-		return -1 * tmp / targets.getRowDimension();
+		return (-1 * tmp / targets.getRowDimension()) + regularize(data, weights);
 	}
 
-	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row, Matrix weights) {
+	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row) {
+		
+		
 		return (targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
 				+ ((1 - targets.get(nb_row, 0)) * Math.log(1 - predictTargets.get(nb_row, 0)));
 	}
 
+	private double regularize (Matrix data, Matrix weights){
+		
+		double res = 0.0 ; 
+		for (int i = 0; i < weights.getRowDimension(); i++) {
+			res += weights.get(i, 0) * weights.get(i, 0);
+		}
+		
+		return (lambda / 2 * data.getRowDimension()) * res;
+	}
+	
 	private double sumErrorByX(Matrix data, Matrix weights, Matrix targets, int nb_row) {
 
 		int rows = data.getRowDimension();
@@ -59,7 +70,8 @@ public class LRGradientDescent {
 		return res;
 
 	}
-
+	
+	
 	private Matrix trainLogisticRegressionModel(Matrix data, Matrix targets, Double lambda, double learning_rate,
 			int nb_iterations) {
 
@@ -91,7 +103,7 @@ public class LRGradientDescent {
 
 		Matrix predictTargets = predict(data, weights);
 
-		return costFunction(targets, predictTargets, weights);
+		return costFunction(data, targets, predictTargets, weights);
 	}
 
 	private Matrix predict(Matrix data, Matrix weights) {

@@ -21,6 +21,7 @@ public class LROneVsAll {
 		trainingFile = "datasets/logisticR_train.data";
 		testingFile = "datasets/logisticR_test.data";
 		this.nb_iterations = 100000;
+		this.nb_classes = 10;
 		this.learning_rate = 0.0001;
 	}
 
@@ -36,16 +37,16 @@ public class LROneVsAll {
 		return sigmoidFunction(res);
 	}
 
-	private double costFunction(Matrix targets, Matrix predictTargets, Matrix weights) {
+	private double costFunction(Matrix targets, Matrix predictTargets) {
 
 		double tmp = 0.0;
 		for (int i = 0; i < targets.getRowDimension(); i++) {
-			tmp += costFunction_aux(targets, predictTargets, i, weights);
+			tmp += costFunction_aux(targets, predictTargets, i);
 		}
 		return -1 * tmp / targets.getRowDimension();
 	}
 
-	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row, Matrix weights) {
+	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row) {
 		return (targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
 				+ ((1 - targets.get(nb_row, 0)) * Math.log(1 - predictTargets.get(nb_row, 0)));
 	}
@@ -61,7 +62,23 @@ public class LROneVsAll {
 
 	}
 
+	
 	private Matrix trainLogisticRegressionModel(Matrix data, Matrix targets, Double lambda, double learning_rate,
+			int nb_iterations, int nb_classes) {
+		
+		for(int i = 0; i<nb_classes; i++){
+		
+			
+		
+		
+		
+		}
+		
+		return trainLogisticRegressionModel_aux(data, targets, lambda, learning_rate, nb_iterations); 
+	}
+	
+	
+	private Matrix trainLogisticRegressionModel_aux(Matrix data, Matrix targets, Double lambda, double learning_rate,
 			int nb_iterations) {
 
 		int column = data.getColumnDimension();
@@ -92,7 +109,7 @@ public class LROneVsAll {
 
 		Matrix predictTargets = predict(data, weights);
 
-		return costFunction(targets, predictTargets, weights);
+		return costFunction(targets, predictTargets);
 	}
 
 	private Matrix predict(Matrix data, Matrix weights) {
@@ -132,7 +149,7 @@ public class LROneVsAll {
 
 			/** Train the model. */
 			Matrix weights = lr.trainLogisticRegressionModel(trainingData, trainingTargets, lr.lambda, lr.learning_rate,
-					lr.nb_iterations);
+					lr.nb_iterations, lr.nb_classes);
 
 			FileUtils.writeFile("logistic_regressoin_oneVsAll_thetas.data", weights);
 			

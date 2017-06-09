@@ -1,10 +1,16 @@
 
-Ce fichier sert à noter toutes les remarques, questions ou explications des algorithmes implémentés.
+Ce fichier sert  a toutes les remarques, questions ou explications des algorithmes implementes.
 
 
-1) Pour le gradient descent de la regression linéaire, il faut penser à rajouter : 
+1) Pour le gradient descent de la regression lineaire, il faut penser a rajouter : 
 
 	- Feature scaling.
 	- Mean normalization.
 	
 	
+	
+	A suivre : 
+	
+	- tester la regression logistique sur plusieurs classes
+	- regression polynomiale
+	- rÃ©seaux de neuronees

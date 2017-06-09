@@ -15,8 +15,8 @@ public class LRGradientDescent {
 
 	public LRGradientDescent() {
 		this.lambda = 0.2;
-//		trainingFile = "datasets/linear_regression_train.data";
-//		testingFile = "datasets/linear_regression_test.data";
+		// trainingFile = "datasets/linear_regression_train.data";
+		// testingFile = "datasets/linear_regression_test.data";
 		trainingFile = "datasets/linearR_train.data";
 		testingFile = "datasets/linearR_test.data";
 		this.nb_iterations = 1000000;
@@ -117,15 +117,15 @@ public class LRGradientDescent {
 			/** Train the model. */
 			Matrix weights = graD.trainLinearRegressionModel(trainingData, trainingTargets, graD.lambda,
 					graD.learning_rate, graD.nb_iterations);
-			
+
 			FileUtils.writeFile("linear_regressoin_gradient_descent_thetas.data", weights);
 
 			/** Evaluate the model using training and testing data. */
 			double training_error = graD.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = graD.evaluateLinearRegressionModel(testingData, testingTargets, weights);
 
-			System.out.println("Training error: "+training_error);
-			System.out.println("Test error: "+testing_error);
+			System.out.println("Training error: " + training_error);
+			System.out.println("Test error: " + testing_error);
 		} catch (Exception e) {
 			System.out.println("Gradient descent (Linear Regression)");
 		}

@@ -14,8 +14,8 @@ public class LRGradientDescent {
 
 	public LRGradientDescent() {
 		this.lambda = 0.02;
-//		trainingFile = "datasets/logistic_regression_train.data";
-//		testingFile = "datasets/logistic_regression_test.data";
+		// trainingFile = "datasets/logistic_regression_train.data";
+		// testingFile = "datasets/logistic_regression_test.data";
 		trainingFile = "datasets/logisticR_train.data";
 		testingFile = "datasets/logisticR_test.data";
 		this.nb_iterations = 100000;
@@ -44,22 +44,21 @@ public class LRGradientDescent {
 	}
 
 	private double costFunction_aux(Matrix targets, Matrix predictTargets, int nb_row) {
-		
-		
+
 		return (targets.get(nb_row, 0) * Math.log(predictTargets.get(nb_row, 0)))
 				+ ((1 - targets.get(nb_row, 0)) * Math.log(1 - predictTargets.get(nb_row, 0)));
 	}
 
-	private double regularize (Matrix data, Matrix weights){
-		
-		double res = 0.0 ; 
+	private double regularize(Matrix data, Matrix weights) {
+
+		double res = 0.0;
 		for (int i = 0; i < weights.getRowDimension(); i++) {
 			res += weights.get(i, 0) * weights.get(i, 0);
 		}
-		
+
 		return (lambda / 2 * data.getRowDimension()) * res;
 	}
-	
+
 	private double sumErrorByX(Matrix data, Matrix weights, Matrix targets, int nb_row) {
 
 		int rows = data.getRowDimension();
@@ -70,8 +69,7 @@ public class LRGradientDescent {
 		return res;
 
 	}
-	
-	
+
 	private Matrix trainLogisticRegressionModel(Matrix data, Matrix targets, Double lambda, double learning_rate,
 			int nb_iterations) {
 
@@ -151,8 +149,8 @@ public class LRGradientDescent {
 			double training_error = lr.evaluateLogisticRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = lr.evaluateLogisticRegressionModel(testingData, testingTargets, weights);
 
-			System.out.println("Training error: "+training_error);
-			System.out.println("Test error: "+testing_error);
+			System.out.println("Training error: " + training_error);
+			System.out.println("Test error: " + testing_error);
 
 		} catch (Exception e) {
 			System.out.println("Gradient descent error (logistic regression)");

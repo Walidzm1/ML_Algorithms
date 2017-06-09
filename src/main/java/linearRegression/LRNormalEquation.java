@@ -22,8 +22,8 @@ public class LRNormalEquation {
 
 	public LRNormalEquation() {
 		lambda = 0.0;
-//		trainingFile = "datasets/linear_regression_train.data";
-//		testingFile = "datasets/linear_regression_test.data";
+		// trainingFile = "datasets/linear_regression_train.data";
+		// testingFile = "datasets/linear_regression_test.data";
 		trainingFile = "datasets/linearR_train.data";
 		testingFile = "datasets/linearR_test.data";
 	}
@@ -70,6 +70,7 @@ public class LRNormalEquation {
 	/**
 	 * test the model using the weights trained using linear regression with L2
 	 * regularizer
+	 * 
 	 * @return
 	 */
 	private double evaluateLinearRegressionModel(Matrix data, Matrix targets, Matrix weights) {
@@ -125,13 +126,13 @@ public class LRNormalEquation {
 			Matrix weights = norEq.trainLinearRegressionModel(trainingData, trainingTargets, norEq.lambda);
 
 			FileUtils.writeFile("linear_regressoin_normal_equation_thetas.data", weights);
-			
+
 			/** Evaluate the model using training and testing data. */
 			double training_error = norEq.evaluateLinearRegressionModel(trainingData, trainingTargets, weights);
 			double testing_error = norEq.evaluateLinearRegressionModel(testingData, testingTargets, weights);
 
-			System.out.println("Training error: "+training_error);
-			System.out.println("Test error: "+testing_error);
+			System.out.println("Training error: " + training_error);
+			System.out.println("Test error: " + testing_error);
 		} catch (Exception e) {
 			System.out.println("Equation normal error (Linear Regression)");
 		}

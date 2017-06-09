@@ -16,7 +16,6 @@ import Jama.Matrix;
 
 public class FileUtils {
 
-	
 	/**
 	 * Read a matrix from a comma sperated file
 	 * 
@@ -53,47 +52,43 @@ public class FileUtils {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	    return new Matrix(0, 0);
+		return new Matrix(0, 0);
 	}
-	
-	
+
 	public static void readFile(String path) throws IOException {
 		BufferedReader readWithBuffer = null;
 		String line;
 		try {
 			readWithBuffer = new BufferedReader(new FileReader(path));
 		} catch (FileNotFoundException exc) {
-			System.out.println("Erreur lors de l'ouverture du fichier: \n"+path);
+			System.out.println("Erreur lors de l'ouverture du fichier: \n" + path);
 		}
 
-		while ((line = readWithBuffer.readLine()) != null){
-			//Traitement
+		while ((line = readWithBuffer.readLine()) != null) {
+			// Traitement
 			System.out.println(line);
 		}
 		readWithBuffer.close();
 	}
-	
-	public static void writeFile(String path, Matrix weights) throws IOException  {
-		String theta = "" ;
+
+	public static void writeFile(String path, Matrix weights) throws IOException {
+		String theta = "";
 		for (int i = 0; i < weights.getRowDimension(); i++) {
-			
-			if(i==0){
+
+			if (i == 0) {
 				theta = String.valueOf(weights.get(i, 0));
-			}
-			else{
-				theta += ","+String.valueOf(weights.get(i, 0));
+			} else {
+				theta += "," + String.valueOf(weights.get(i, 0));
 			}
 
-		
 		}
-		
+
 		List<String> lines = Arrays.asList(theta);
-		Path file = Paths.get("results\\"+path);
+		Path file = Paths.get("results\\" + path);
 		Files.write(file, lines, Charset.forName("UTF-8"));
 	}
-	
-	
-	public static void main (String [] args) throws IOException{
+
+	public static void main(String[] args) throws IOException {
 		FileUtils.readFile("C:\\Users\\wzeghdaoui\\Personal workspace\\MachineLearningAlgorithms\\resource\\test.txt");
 	}
 }

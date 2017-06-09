@@ -5,10 +5,10 @@ import Jama.Matrix;
 public class MLUtils {
 
 	/**
-	 * the last column correspond to the target
-	 * Hence, remove target values from the last column of a data set.
+	 * the last column correspond to the target Hence, remove target values from
+	 * the last column of a data set.
 	 * <p>
-	 * Meanwhile, we need to add 1 to 0 column of each row as a bias term 
+	 * Meanwhile, we need to add 1 to 0 column of each row as a bias term
 	 * 
 	 * @param data_set
 	 * @return
@@ -23,7 +23,7 @@ public class MLUtils {
 				if (c == 0) {
 					modifiedFeatures.set(r, c, 1.0);
 				} else {
-					modifiedFeatures.set(r, c, features.get(r, c-1));
+					modifiedFeatures.set(r, c, features.get(r, c - 1));
 				}
 			}
 		}
@@ -37,7 +37,8 @@ public class MLUtils {
 	 * @return
 	 */
 	public static Matrix getTargets(Matrix data_set) {
-	    return data_set.getMatrix(0, data_set.getRowDimension() - 1, data_set.getColumnDimension() - 1, data_set.getColumnDimension() - 1);
+		return data_set.getMatrix(0, data_set.getRowDimension() - 1, data_set.getColumnDimension() - 1,
+				data_set.getColumnDimension() - 1);
 	}
 
 }

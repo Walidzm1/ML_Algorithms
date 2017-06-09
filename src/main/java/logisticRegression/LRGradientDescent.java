@@ -92,6 +92,36 @@ public class LRGradientDescent {
 		return weights;
 	}
 
+	private void classify(Matrix Xs, Matrix thetas) {
+
+		thetas = thetas.transpose();
+		String _class = "";
+		for (int i = 0; i < Xs.getRowDimension(); i++) {
+			double tmp = -1.1;
+			for (int j = 0; j < thetas.getRowDimension(); j++) {
+				Matrix theta_tmp = thetas.getMatrix(j, j, 0, thetas.getColumnDimension() - 1);
+				if (hypothesis(Xs, i, theta_tmp.transpose()) > tmp) {
+					_class = String.valueOf(j);
+				}
+			}
+			int _class_opt = Integer.parseInt(_class);
+			Matrix theta_opt = thetas.getMatrix(_class_opt, _class_opt, 0, thetas.getColumnDimension() - 1);
+			System.out.println("class of i_" + i + " (" + Xs.get(i, 0) + "," + Xs.get(i, 1) + ") >> "
+					+ classify_aux(Xs, i, theta_opt.transpose()));
+		}
+	}
+
+	private double classify_aux(Matrix Xs, int nb_row, Matrix theta) {
+		double res = 0.0;
+		for (int j = 1; j < Xs.getColumnDimension(); j++) {
+			res += Xs.get(nb_row, j) * theta.get(j, 0);
+		}
+		if (res >= (-1 * theta.get(0, 0))) {
+			return 1;
+		} else
+			return 0;
+	}
+	
 	private double evaluateLogisticRegressionModel(Matrix data, Matrix targets, Matrix weights) {
 
 		int row = data.getRowDimension();
@@ -152,6 +182,8 @@ public class LRGradientDescent {
 			System.out.println("Training error: " + training_error);
 			System.out.println("Test error: " + testing_error);
 
+			lr.classify(testing, weights);
+			
 		} catch (Exception e) {
 			System.out.println("Gradient descent error (logistic regression)");
 		}

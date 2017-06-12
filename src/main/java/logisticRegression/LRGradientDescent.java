@@ -18,8 +18,8 @@ public class LRGradientDescent {
 		// testingFile = "datasets/logistic_regression_test.data";
 		trainingFile = "datasets/logisticR_train.data";
 		testingFile = "datasets/logisticR_test.data";
-		this.nb_iterations = 100000;
-		this.learning_rate = 0.0001;
+		this.nb_iterations = 10000000;
+		this.learning_rate = 0.001;
 	}
 
 	private double sigmoidFunction(double z) {
@@ -101,12 +101,13 @@ public class LRGradientDescent {
 			for (int j = 0; j < thetas.getRowDimension(); j++) {
 				Matrix theta_tmp = thetas.getMatrix(j, j, 0, thetas.getColumnDimension() - 1);
 				if (hypothesis(Xs, i, theta_tmp.transpose()) > tmp) {
+					tmp = hypothesis(Xs, i, theta_tmp.transpose());
 					_class = String.valueOf(j);
 				}
 			}
 			int _class_opt = Integer.parseInt(_class);
 			Matrix theta_opt = thetas.getMatrix(_class_opt, _class_opt, 0, thetas.getColumnDimension() - 1);
-			System.out.println("class of i_" + i + " (" + Xs.get(i, 0) + "," + Xs.get(i, 1) + ") >> "
+			System.out.println("class of i_" + i + " (" + Xs.get(i, 1) + "," + Xs.get(i, 2) + ") >> "
 					+ classify_aux(Xs, i, theta_opt.transpose()));
 		}
 	}
@@ -182,7 +183,7 @@ public class LRGradientDescent {
 			System.out.println("Training error: " + training_error);
 			System.out.println("Test error: " + testing_error);
 
-			lr.classify(testing, weights);
+			lr.classify(testingData, weights);
 			
 		} catch (Exception e) {
 			System.out.println("Gradient descent error (logistic regression)");

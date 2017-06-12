@@ -14,14 +14,14 @@ public class LROneVsAll {
 	public Double learning_rate;
 
 	public LROneVsAll() {
-		this.lambda = 0.25;
+		this.lambda = 0.2;
 		// trainingFile = "datasets/logistic_regression_trainset.data";
 		// testingFile = "datasets/logistic_regression_testset.data";
 		trainingFile = "datasets/logistic_regression_train.data";
 		testingFile = "datasets/logistic_regression_test.data";
 		// trainingFile = "datasets/logisticR_train.data";
 		// testingFile = "datasets/logisticR_test.data";
-		this.nb_iterations = 1000000;
+		this.nb_iterations = 100000;
 		this.nb_classes = 2;
 		this.learning_rate = 0.001;
 	}
@@ -122,39 +122,58 @@ public class LROneVsAll {
 		return weights;
 	}
 
-	private void classify(Matrix Xs, Matrix thetas) {
+	private double classify(Matrix Xs, Matrix thetas, Matrix targets) {
 
 		String _class = "";
+		double error = 0.0;
 		for (int i = 0; i < Xs.getRowDimension(); i++) {
-			double tmp = -1.0;
+			double tmp = -1.1;
 			for (int j = 0; j < thetas.getRowDimension(); j++) {
 				Matrix theta_tmp = thetas.getMatrix(j, j, 0, thetas.getColumnDimension() - 1);
 				if (hypothesis(Xs, i, theta_tmp.transpose()) > tmp) {
+					tmp = hypothesis(Xs, i, theta_tmp.transpose());
 					_class = String.valueOf(j);
 				}
 			}
-
 			int _class_opt = Integer.parseInt(_class);
 			Matrix theta_opt = thetas.getMatrix(_class_opt, _class_opt, 0, thetas.getColumnDimension() - 1);
-			// System.out.println("class of i_"+ i +" ("+ Xs.get(i,0) +"," +
-			// Xs.get(i,1) +"," + Xs.get(i,2) +"," + Xs.get(i,3) +"," +
-			// Xs.get(i,4)+") >> "+classify_aux(Xs, i, theta_opt.transpose()));
-			System.out.println("class of i_" + i + " (" + Xs.get(i, 0) + "," + Xs.get(i, 1) + ") >> "
-					+ classify_aux(Xs, i, theta_opt.transpose()));
+			
+//			System.out.println("class of i_" + (i+1) + ") >> " + classify_aux2(Xs, i, theta_opt.transpose()));
+			error += Math.abs(classify_aux2(Xs, i, theta_opt.transpose()) - targets.get(i, 0));
 		}
+		return error / targets.getRowDimension();
+		
 	}
 
 	private double classify_aux(Matrix Xs, int nb_row, Matrix theta) {
+
 		double res = 0.0;
 		for (int j = 1; j < Xs.getColumnDimension(); j++) {
 			res += Xs.get(nb_row, j) * theta.get(j, 0);
 		}
 		if (res >= (-1 * theta.get(0, 0))) {
 			return 1;
-		} else
+		} else {
 			return 0;
+		}
 	}
 
+	private double classify_aux2(Matrix Xs, int nb_row, Matrix theta) {
+		double res = 0.0;
+		for (int j = 0; j < Xs.getColumnDimension(); j++) {
+			res += Xs.get(nb_row, j) * theta.get(j, 0);
+		}
+		System.out.println(hypothesis(Xs, nb_row, theta));
+		System.out.println(hypothesis(Xs, nb_row, theta));
+		if (res <= 0.27) {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+
+	
+	
 	private double evaluateLogisticRegressionModel(Matrix data, Matrix targets, Matrix weights) {
 
 		int row = data.getRowDimension();
@@ -215,7 +234,7 @@ public class LROneVsAll {
 			System.out.println("Training error: " + training_error);
 			System.out.println("Test error: " + testing_error);
 
-			lr.classify(testing, weights);
+			System.out.println("error = " + lr.classify(testingData, weights,testingTargets));
 
 		} catch (Exception e) {
 			System.out.println("One vs All error (logistic regression)");

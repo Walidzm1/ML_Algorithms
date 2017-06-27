@@ -6,7 +6,7 @@ My proper implementation of machine learning algorithms from scratch
   -> Normal equation <br />
   -> Gradient descent <br />
  
-- Linear regression (with regularization) <br />
+- Logistic regression (with regularization) <br />
   -> Binary classifier (Gradient descent) <br />
   -> One-vs-All classifier (Gradient descent) <br />
 
